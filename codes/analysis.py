@@ -33,7 +33,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, random_sta
 
 # %%
 from sklearn.tree import DecisionTreeClassifier
-dt_clf = DecisionTreeClassifier(criterion='gini', random_state=1004, max_depth = 3)
+dt_clf = DecisionTreeClassifier(criterion='gini', random_state=1, max_depth = 3)
 dt_clf.fit(X_train, y_train)
 print(dt_clf.score(X_train, y_train))
 print(dt_clf.score(X_test, y_test))
@@ -51,8 +51,15 @@ from sklearn import tree
 fig = plt.figure(figsize=(25,20))
 _ = tree.plot_tree(dt_clf, 
                    feature_names=col_m,  
-                   class_names='TF',
+                   class_names=True,
                    filled=True)
 fig.show()
 
 # %%
+dt_clf.feature_importances_
+
+# %%
+"""
+I have to add a validation rule.
+But I think performance of model is quite reasonable!
+"""
