@@ -16,4 +16,5 @@ df_result = pd.merge(df_db, df_mbpt,
                      right_on=['ID', 'INDEX_DATE'])
 
 df_result.to_csv("../../data/asthma_dataset.csv", index=False, encoding='utf-8-sig')
+df_result.to_excel("../../data/asthma_dataset.xlsx", index=False)
 # %%

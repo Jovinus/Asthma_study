@@ -31,7 +31,9 @@ train_set, test_set = train_test_split(df_init,
 print("Train set size = {}".format(len(train_set)))
 print("Test set size = {}".format(len(test_set)))
 # %%
-feature_mask = ['age', 'sex', 'sp_eosinophil', 'FeNO', 'mbpt']
+feature_mask = list(df_init.columns[82:]) + ['FeNO', 'PC20_mgpml']
+# feature_mask = ['FeNO', 'PC20_mgpml']
+
 # %% Cross-Val Model
 
 from tqdm import tqdm
@@ -106,6 +108,6 @@ for hyper_lr in tqdm(hyper_param_lr, desc= 'l_rate'):
                 # print(result['mean_score'])
                 results["depth_" + str(hyper_depth) + "_lr_" + str(hyper_lr) + "_lambda_" + str(hyper_labmda) + "_gamma_" + str(hyper_gamma)] = result
 # %%
-with open('../asthma_xg_classifier_subset.pickle', 'wb') as file_nm:
+with open('../asthma_xg_classifier_mbpt_feno_pc20.pickle', 'wb') as file_nm:
     pickle.dump(results, file_nm, protocol=pickle.HIGHEST_PROTOCOL)
 # %%
