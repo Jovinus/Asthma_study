@@ -6,7 +6,7 @@ import numpy as np
 pd.set_option("display.max_columns", None)
 
 def load_dataset():
-    DATA_PATH = "/home/lkh256/Studio/Asthma/data"
+    DATA_PATH = "../data"
     df_orig = pd.read_excel(os.path.join(DATA_PATH, '추가결과_이진영_20180907.xlsx'), sheet_name='db')
     
     #### basic data preprocessing
