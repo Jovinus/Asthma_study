@@ -7,11 +7,12 @@ import seaborn as sns
 pd.set_option("display.max_columns", None)
 
 # %%
-df_orig = pd.read_excel('../data/추가결과_이진영_20180907.xlsx', sheet_name='db')
+df_orig = pd.read_csv('../data/asthma_dataset.csv')
 display(df_orig.head())
 
 # %%
 df_set = df_orig.query('Bl_eos_count.notnull()', engine='python')
+df_set['sp_cut'] = (df_set['sp_eosinophil'] > 3).astype(int)
 # %%
 print(df_set.query('Bl_eos_count < 100')['sp_cut'].value_counts(normalize=True))
 print(df_set.query('Bl_eos_count < 200')['sp_cut'].value_counts(normalize=True))
@@ -57,6 +58,7 @@ for i in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]:
 sns.barplot(x='feature', y='sp_cut', hue='index', data=df_tmp)
 ax.set_xticklabels(ax.get_xticklabels(), rotation=90)
 plt.show()
+
 # %%
 fig, ax = plt.subplots(1, 1, figsize=(10, 10))
 
