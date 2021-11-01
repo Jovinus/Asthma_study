@@ -134,7 +134,7 @@ def cutoff_analysis(X, y, data, youden=True, file_nm='threshold'):
         y_hat_test = model.predict_proba(test[:, :-1])
         specificity, sensitivity, ppv, npv, f1, accuracy, threshold_of_interest, roc_auc, pr_auc, fpr, tpr, precision, recall = performances_hard_decision(test[:, -1], y_hat_test[:, 1], youden=youden)
         
-        threshold = ((np.log(threshold_of_interest/(1-threshold_of_interest)) - model.intercept_) /model.coef_)[0]
+        threshold = ((np.log(threshold_of_interest/(1-threshold_of_interest)) - model.intercept_) /model.coef_)[0][0]
         
         stats_specificity.append(specificity)
         stats_sensitivity.append(sensitivity)
@@ -208,12 +208,12 @@ if __name__ == '__main__':
 
     Blood Eosinophil Counts
     Mean specificity = 0.77, 95% confidence interval 0.70 and 0.90
-    Mean sensitivity = 0.81, 95% confidence interval 0.67 and 0.87
-    Mean ppv = 0.67, 95% confidence interval 0.62 and 0.79
+    Mean sensitivity = 0.81, 95% confidence interval 0.67 and 0.88
+    Mean ppv = 0.67, 95% confidence interval 0.62 and 0.80
     Mean npv = 0.88, 95% confidence interval 0.83 and 0.91
     Mean f1 = 0.73, 95% confidence interval 0.71 and 0.76
-    Mean accuracy = 0.78, 95% confidence interval 0.76 and 0.82
-    Mean threshold = 195.84, 95% confidence interval 162.13 and 290.19
+    Mean accuracy = 0.79, 95% confidence interval 0.76 and 0.82
+    Mean threshold = 196.94, 95% confidence interval 162.13 and 290.19
     Mean threshold_per = 0.27, 95% confidence interval 0.19 and 0.48
     Mean auprc = 0.79, 95% confidence interval 0.76 and 0.82
     Mean auroc = 0.86, 95% confidence interval 0.84 and 0.88
@@ -221,39 +221,39 @@ if __name__ == '__main__':
 
 
     
-![png](./img/output_2_1.png)
+![png](output_2_1.png)
     
 
 
 
     
-![png](./img/output_2_2.png)
+![png](output_2_2.png)
     
 
 
     
     FeNO
-    Mean specificity = 0.85, 95% confidence interval 0.73 and 0.98
-    Mean sensitivity = 0.58, 95% confidence interval 0.38 and 0.70
-    Mean ppv = 0.90, 95% confidence interval 0.84 and 0.98
-    Mean npv = 0.47, 95% confidence interval 0.32 and 0.61
-    Mean f1 = 0.70, 95% confidence interval 0.55 and 0.78
-    Mean accuracy = 0.66, 95% confidence interval 0.53 and 0.74
-    Mean threshold = 73.99, 95% confidence interval 55.00 and 113.00
-    Mean threshold_per = 0.69, 95% confidence interval 0.46 and 0.96
+    Mean specificity = 0.85, 95% confidence interval 0.74 and 0.97
+    Mean sensitivity = 0.58, 95% confidence interval 0.39 and 0.72
+    Mean ppv = 0.90, 95% confidence interval 0.85 and 0.98
+    Mean npv = 0.47, 95% confidence interval 0.34 and 0.62
+    Mean f1 = 0.70, 95% confidence interval 0.56 and 0.79
+    Mean accuracy = 0.66, 95% confidence interval 0.54 and 0.74
+    Mean threshold = 73.57, 95% confidence interval 55.00 and 111.00
+    Mean threshold_per = 0.68, 95% confidence interval 0.46 and 0.95
     Mean auprc = 0.88, 95% confidence interval 0.84 and 0.91
-    Mean auroc = 0.72, 95% confidence interval 0.62 and 0.80
+    Mean auroc = 0.72, 95% confidence interval 0.63 and 0.80
 
 
 
     
-![png](./img/output_2_4.png)
+![png](output_2_4.png)
     
 
 
 
     
-![png](./img/output_2_5.png)
+![png](output_2_5.png)
     
 
 
@@ -280,53 +280,53 @@ if __name__ == '__main__':
     Name: ISE_Eo3%, dtype: int64
     
     Blood Eosinophil Counts
-    Mean specificity = 0.87, 95% confidence interval 0.83 and 0.92
+    Mean specificity = 0.87, 95% confidence interval 0.83 and 0.91
     Mean sensitivity = 0.73, 95% confidence interval 0.69 and 0.77
     Mean ppv = 0.92, 95% confidence interval 0.90 and 0.95
     Mean npv = 0.61, 95% confidence interval 0.57 and 0.65
-    Mean f1 = 0.81, 95% confidence interval 0.79 and 0.84
+    Mean f1 = 0.82, 95% confidence interval 0.79 and 0.84
     Mean accuracy = 0.78, 95% confidence interval 0.75 and 0.81
-    Mean threshold = 284.55, 95% confidence interval 250.32 and 290.19
-    Mean threshold_per = 0.70, 95% confidence interval 0.59 and 0.84
+    Mean threshold = 284.62, 95% confidence interval 250.32 and 290.19
+    Mean threshold_per = 0.69, 95% confidence interval 0.60 and 0.85
     Mean auprc = 0.91, 95% confidence interval 0.89 and 0.93
     Mean auroc = 0.84, 95% confidence interval 0.81 and 0.87
 
 
 
     
-![png](./img/output_3_1.png)
+![png](output_3_1.png)
     
 
 
 
     
-![png](./img/output_3_2.png)
+![png](output_3_2.png)
     
 
 
     
     FeNO
-    Mean specificity = 0.85, 95% confidence interval 0.76 and 0.94
+    Mean specificity = 0.85, 95% confidence interval 0.75 and 0.93
     Mean sensitivity = 0.73, 95% confidence interval 0.63 and 0.83
     Mean ppv = 0.92, 95% confidence interval 0.88 and 0.96
     Mean npv = 0.59, 95% confidence interval 0.49 and 0.69
     Mean f1 = 0.81, 95% confidence interval 0.75 and 0.87
-    Mean accuracy = 0.77, 95% confidence interval 0.71 and 0.83
-    Mean threshold = 60.23, 95% confidence interval 44.00 and 72.00
-    Mean threshold_per = 0.70, 95% confidence interval 0.53 and 0.90
-    Mean auprc = 0.92, 95% confidence interval 0.90 and 0.94
-    Mean auroc = 0.83, 95% confidence interval 0.78 and 0.88
+    Mean accuracy = 0.77, 95% confidence interval 0.71 and 0.82
+    Mean threshold = 60.57, 95% confidence interval 44.00 and 75.00
+    Mean threshold_per = 0.70, 95% confidence interval 0.51 and 0.90
+    Mean auprc = 0.92, 95% confidence interval 0.89 and 0.94
+    Mean auroc = 0.83, 95% confidence interval 0.78 and 0.87
 
 
 
     
-![png](./img/output_3_4.png)
+![png](output_3_4.png)
     
 
 
 
     
-![png](./img/output_3_5.png)
+![png](output_3_5.png)
     
 
 
@@ -335,52 +335,52 @@ if __name__ == '__main__':
     Name: ISE_Eo3%, dtype: int64
     
     Blood Eosinophil Counts
-    Mean specificity = 0.76, 95% confidence interval 0.70 and 0.80
-    Mean sensitivity = 0.80, 95% confidence interval 0.73 and 0.87
+    Mean specificity = 0.76, 95% confidence interval 0.70 and 0.81
+    Mean sensitivity = 0.80, 95% confidence interval 0.73 and 0.88
     Mean ppv = 0.38, 95% confidence interval 0.33 and 0.42
     Mean npv = 0.96, 95% confidence interval 0.94 and 0.97
-    Mean f1 = 0.51, 95% confidence interval 0.46 and 0.56
+    Mean f1 = 0.51, 95% confidence interval 0.47 and 0.56
     Mean accuracy = 0.77, 95% confidence interval 0.72 and 0.80
-    Mean threshold = 181.44, 95% confidence interval 162.80 and 208.32
+    Mean threshold = 181.23, 95% confidence interval 162.80 and 208.32
     Mean threshold_per = 0.12, 95% confidence interval 0.08 and 0.16
     Mean auprc = 0.50, 95% confidence interval 0.43 and 0.57
-    Mean auroc = 0.83, 95% confidence interval 0.79 and 0.86
+    Mean auroc = 0.83, 95% confidence interval 0.80 and 0.86
 
 
 
     
-![png](./img/output_3_7.png)
+![png](output_3_7.png)
     
 
 
 
     
-![png](./img/output_3_8.png)
+![png](output_3_8.png)
     
 
 
     
     FeNO
-    Mean specificity = 0.68, 95% confidence interval 0.20 and 1.00
-    Mean sensitivity = 0.53, 95% confidence interval 0.12 and 1.00
-    Mean ppv = 0.72, 95% confidence interval 0.43 and 1.00
-    Mean npv = 0.71, 95% confidence interval 0.49 and 1.00
-    Mean f1 = 0.48, 95% confidence interval 0.21 and 0.75
-    Mean accuracy = 0.61, 95% confidence interval 0.52 and 0.71
-    Mean threshold = 56.99, 95% confidence interval 9.00 and 112.00
-    Mean threshold_per = 0.39, 95% confidence interval 0.04 and 0.97
-    Mean auprc = 0.55, 95% confidence interval 0.45 and 0.64
-    Mean auroc = 0.52, 95% confidence interval 0.38 and 0.67
+    Mean specificity = 0.71, 95% confidence interval 0.20 and 1.00
+    Mean sensitivity = 0.51, 95% confidence interval 0.11 and 1.00
+    Mean ppv = 0.75, 95% confidence interval 0.44 and 1.00
+    Mean npv = 0.70, 95% confidence interval 0.48 and 1.00
+    Mean f1 = 0.47, 95% confidence interval 0.20 and 0.74
+    Mean accuracy = 0.61, 95% confidence interval 0.51 and 0.71
+    Mean threshold = 60.61, 95% confidence interval 9.00 and 112.00
+    Mean threshold_per = 0.41, 95% confidence interval 0.04 and 0.97
+    Mean auprc = 0.55, 95% confidence interval 0.46 and 0.64
+    Mean auroc = 0.52, 95% confidence interval 0.37 and 0.66
 
 
 
     
-![png](./img/output_3_10.png)
+![png](output_3_10.png)
     
 
 
 
     
-![png](./img/output_3_11.png)
+![png](output_3_11.png)
     
 
