@@ -221,13 +221,13 @@ if __name__ == '__main__':
 
 
     
-![png](output_2_1.png)
+![png](./img/output_2_1.png)
     
 
 
 
     
-![png](output_2_2.png)
+![png](./img/output_2_2.png)
     
 
 
@@ -247,13 +247,13 @@ if __name__ == '__main__':
 
 
     
-![png](output_2_4.png)
+![png](./img/output_2_4.png)
     
 
 
 
     
-![png](output_2_5.png)
+![png](./img/output_2_5.png)
     
 
 
@@ -294,13 +294,13 @@ if __name__ == '__main__':
 
 
     
-![png](output_3_1.png)
+![png](./img/output_3_1.png)
     
 
 
 
     
-![png](output_3_2.png)
+![png](./img/output_3_2.png)
     
 
 
@@ -320,13 +320,13 @@ if __name__ == '__main__':
 
 
     
-![png](output_3_4.png)
+![png](./img/output_3_4.png)
     
 
 
 
     
-![png](output_3_5.png)
+![png](./img/output_3_5.png)
     
 
 
@@ -349,13 +349,13 @@ if __name__ == '__main__':
 
 
     
-![png](output_3_7.png)
+![png](./img/output_3_7.png)
     
 
 
 
     
-![png](output_3_8.png)
+![png](./img/output_3_8.png)
     
 
 
@@ -375,12 +375,12 @@ if __name__ == '__main__':
 
 
     
-![png](output_3_10.png)
+![png](./img/output_3_10.png)
     
 
 
 
     
-![png](output_3_11.png)
+![png](./img/output_3_11.png)
     
 
