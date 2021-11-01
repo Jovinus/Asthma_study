@@ -95,7 +95,7 @@ def plot_prc_curve(x, y, data, mean, std):
 from sklearn.utils import resample
 from sklearn.linear_model import LogisticRegression
 
-def cutoff_analysis(X, y, data, youden=True):
+def cutoff_analysis(X, y, data, youden=True, file_nm='threshold'):
     n_iteration = 1000
     test_size = 0.3
     n_size = int(len(data) * test_size)
@@ -156,12 +156,14 @@ def cutoff_analysis(X, y, data, youden=True):
         fig_precision.extend(interp_precision.tolist())
         fig_recall.extend(mean_recall.tolist())
         
-    metrics = [{'specificity':stats_specificity}, {'sensitivity':stats_sensitivity}, 
-            {'ppv':stats_ppv}, {'npv':stats_npv}, {'f1':stats_f1}, {'accuracy':stats_accuracy}, 
-            {'threshold':stats_threshold}, {'threshold_per':stats_threshold_per}, {'auprc':stats_auprc}, {'auroc':stats_auroc}]
+    metrics = {'specificity':stats_specificity, 'sensitivity':stats_sensitivity, 
+                'ppv':stats_ppv, 'npv':stats_npv, 'f1':stats_f1, 'accuracy':stats_accuracy, 
+                'threshold':stats_threshold, 'threshold_per':stats_threshold_per, 
+                'auprc':stats_auprc, 'auroc':stats_auroc}
     
-    for metric in metrics:
-        name, metric = list(metric.items())[0]
+    pd.DataFrame(metrics).to_csv('../result/' + file_nm, encoding='utf-8-sig', index=False)
+    
+    for name, metric in metrics.items():
         mean = np.mean(metric)
         alpha = 0.95
         p = ((1.0-alpha)/2.0) * 100
@@ -193,19 +195,23 @@ if __name__ == '__main__':
     df_orig = pd.read_excel('../data/20210913 ISE-FENO eos.xlsx', 
                             sheet_name='669 (77 missing eos제외)')
     print('Blood Eosinophil Counts')
-    cutoff_analysis(X='Lab_EosCount', y='ISE_Eo3%', data=df_orig, youden=True)
+    cutoff_analysis(X='Lab_EosCount', y='ISE_Eo3%', data=df_orig, youden=True, file_nm='bl_cut.csv')
 
     print('\nFeNO')
-    cutoff_analysis(X='FeNO', y='ISE_Eo3%', data=df_orig, youden=True)
+    cutoff_analysis(X='FeNO', y='ISE_Eo3%', data=df_orig, youden=True, file_nm='feno_cut.csv')
 # %%
+    print(df_orig.query('Asthma == 1')['ISE_Eo3%'].value_counts())
     print('\nBlood Eosinophil Counts')
-    cutoff_analysis(X='Lab_EosCount', y='ISE_Eo3%', data=df_orig.query('Asthma == 1'), youden=True)
+    cutoff_analysis(X='Lab_EosCount', y='ISE_Eo3%', data=df_orig.query('Asthma == 1'), youden=True, file_nm='bl_cut_sub_a.csv')
 
     print('\nFeNO')
-    cutoff_analysis(X='FeNO', y='ISE_Eo3%', data=df_orig.query('Asthma == 1'), youden=True)
+    cutoff_analysis(X='FeNO', y='ISE_Eo3%', data=df_orig.query('Asthma == 1'), youden=True, file_nm='feno_cut_sub_a.csv')
+    
+    print(df_orig.query('Asthma == 0')['ISE_Eo3%'].value_counts())
     
     print('\nBlood Eosinophil Counts')
-    cutoff_analysis(X='Lab_EosCount', y='ISE_Eo3%', data=df_orig.query('Asthma == 0'), youden=True)
+    cutoff_analysis(X='Lab_EosCount', y='ISE_Eo3%', data=df_orig.query('Asthma == 0'), youden=True, file_nm='bl_cut_sub_h.csv')
 
     print('\nFeNO')
-    cutoff_analysis(X='FeNO', y='ISE_Eo3%', data=df_orig.query('Asthma == 0'), youden=True)
+    cutoff_analysis(X='FeNO', y='ISE_Eo3%', data=df_orig.query('Asthma == 0'), youden=True, file_nm='feno_cut_sub_h.csv')
+# %%
