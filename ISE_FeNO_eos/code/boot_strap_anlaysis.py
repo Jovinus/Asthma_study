@@ -132,7 +132,7 @@ def cutoff_analysis(X, y, data, youden=True, file_nm='threshold'):
         y_hat_test = model.predict_proba(test[:, :-1])
         specificity, sensitivity, ppv, npv, f1, accuracy, threshold_of_interest, roc_auc, pr_auc, fpr, tpr, precision, recall = performances_hard_decision(test[:, -1], y_hat_test[:, 1], youden=youden)
         
-        threshold = (np.log(threshold_of_interest/(1-threshold_of_interest)) - model.intercept_) /model.coef_
+        threshold = ((np.log(threshold_of_interest/(1-threshold_of_interest)) - model.intercept_) /model.coef_)[0][0]
         
         stats_specificity.append(specificity)
         stats_sensitivity.append(sensitivity)
