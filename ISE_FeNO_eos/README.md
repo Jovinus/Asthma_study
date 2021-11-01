@@ -221,13 +221,13 @@ if __name__ == '__main__':
 
 
     
-![png](output_2_1.png)
+![png](./img/output_2_1.png)
     
 
 
 
     
-![png](output_2_2.png)
+![png](./img/output_2_2.png)
     
 
 
@@ -247,13 +247,13 @@ if __name__ == '__main__':
 
 
     
-![png](output_2_4.png)
+![png](./img/output_2_4.png)
     
 
 
 
     
-![png](output_2_5.png)
+![png](./img/output_2_5.png)
     
 
 
