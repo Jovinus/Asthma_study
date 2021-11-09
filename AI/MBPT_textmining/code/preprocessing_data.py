@@ -97,4 +97,6 @@ if __name__ == '__main__':
     df_mbpt = pd.read_excel("../data/AI_asthmaDx 20210724.xlsx")
     df_result = assign_all_pattern(df_mbpt)
     df_result.to_csv('../data/AI_asthmaDX_parsed.csv', encoding='utf-8-sig', index=False)
+    
+    df_mbpt = pd.read_excel("../data/validation_set.xlsx")
 # %%
