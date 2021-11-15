@@ -15,12 +15,16 @@ baseline_feature = ['PtID', 'IndexDate', 'AgeAtDx', 'Sex_f1m2', 'BMI', 'Smk', 'S
 # %%
 df_new_db = df_new_db[baseline_feature + mbpt_txt]
 df_new_db = df_new_db.assign(Sex_f1m2=lambda x: x['Sex_f1m2'].map({'F':1, 'M':2}), 
-                            #  Smk='', 
-                            #  Skintest=''
+                             Smk=lambda x: x['Smk'].map({'Never-smoker':0, 'Never smoker':0, 'Non-smoker':0, 'Ex-smoker':1, '과거흡연, 현재금연':1}).fillna(0), 
+                             Skintest=lambda x: x['Skintest'].map({'P':2, 'B':1, 'N':0, 'N(Dermo)':0})
                              )
 df_new_db = df_new_db.query('ISE_Eos.notnull()', engine='python')
 # %%
 df_cur_db = df_cur_db[baseline_feature + mbpt_txt]
+df_cur_db = df_cur_db.assign(Skintest=lambda x: x['Skintest'].map({'P':2, 'B':1, 'N':0, 'N(Dermo)':0}))
 # %%
 df_db = pd.concat((df_cur_db, df_new_db), axis=0)
+# %%
+df_db.to_csv('../data/asthma_ai_dataset.csv', index=False, encoding='utf-8')
+
 # %%
