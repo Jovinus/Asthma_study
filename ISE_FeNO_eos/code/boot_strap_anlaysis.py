@@ -192,8 +192,10 @@ def test_plot(x, y):
 # %%
 if __name__ == '__main__':
     
-    df_orig = pd.read_excel('../data/20210913 ISE-FENO eos.xlsx', 
-                            sheet_name='669 (77 missing eos제외)')
+    # df_orig = pd.read_excel('../data/20210913 ISE-FENO eos.xlsx', 
+    #                         sheet_name='669 (77 missing eos제외)')
+    df_orig = pd.read_csv('../../DB/data/ISE_3_cut_dataset.csv')
+    
     print('Blood Eosinophil Counts')
     cutoff_analysis(X='Lab_EosCount', y='ISE_Eo3%', data=df_orig, youden=True, file_nm='bl_cut.csv')
 
