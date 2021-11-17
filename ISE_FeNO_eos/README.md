@@ -197,8 +197,10 @@ def test_plot(x, y):
 ```python
 if __name__ == '__main__':
     
-    df_orig = pd.read_excel('../data/20210913 ISE-FENO eos.xlsx', 
-                            sheet_name='669 (77 missing eos제외)')
+    # df_orig = pd.read_excel('../data/20210913 ISE-FENO eos.xlsx', 
+    #                         sheet_name='669 (77 missing eos제외)')
+    df_orig = pd.read_csv('../../DB/data/ISE_3_cut_dataset.csv')
+    
     print('Blood Eosinophil Counts')
     cutoff_analysis(X='Lab_EosCount', y='ISE_Eo3%', data=df_orig, youden=True, file_nm='bl_cut.csv')
 
@@ -207,16 +209,16 @@ if __name__ == '__main__':
 ```
 
     Blood Eosinophil Counts
-    Mean specificity = 0.77, 95% confidence interval 0.70 and 0.90
-    Mean sensitivity = 0.81, 95% confidence interval 0.67 and 0.88
-    Mean ppv = 0.67, 95% confidence interval 0.62 and 0.80
-    Mean npv = 0.88, 95% confidence interval 0.83 and 0.91
-    Mean f1 = 0.73, 95% confidence interval 0.71 and 0.76
-    Mean accuracy = 0.79, 95% confidence interval 0.76 and 0.82
-    Mean threshold = 196.94, 95% confidence interval 162.13 and 290.19
-    Mean threshold_per = 0.27, 95% confidence interval 0.19 and 0.48
-    Mean auprc = 0.79, 95% confidence interval 0.76 and 0.82
-    Mean auroc = 0.86, 95% confidence interval 0.84 and 0.88
+    Mean specificity = 0.74, 95% confidence interval 0.69 and 0.86
+    Mean sensitivity = 0.80, 95% confidence interval 0.67 and 0.84
+    Mean ppv = 0.67, 95% confidence interval 0.64 and 0.76
+    Mean npv = 0.85, 95% confidence interval 0.80 and 0.87
+    Mean f1 = 0.73, 95% confidence interval 0.70 and 0.75
+    Mean accuracy = 0.76, 95% confidence interval 0.74 and 0.79
+    Mean threshold = 200.58, 95% confidence interval 184.04 and 290.00
+    Mean threshold_per = 0.29, 95% confidence interval 0.24 and 0.44
+    Mean auprc = 0.77, 95% confidence interval 0.74 and 0.79
+    Mean auroc = 0.83, 95% confidence interval 0.81 and 0.85
 
 
 
@@ -233,16 +235,16 @@ if __name__ == '__main__':
 
     
     FeNO
-    Mean specificity = 0.85, 95% confidence interval 0.74 and 0.97
-    Mean sensitivity = 0.58, 95% confidence interval 0.39 and 0.72
-    Mean ppv = 0.90, 95% confidence interval 0.85 and 0.98
-    Mean npv = 0.47, 95% confidence interval 0.34 and 0.62
-    Mean f1 = 0.70, 95% confidence interval 0.56 and 0.79
-    Mean accuracy = 0.66, 95% confidence interval 0.54 and 0.74
-    Mean threshold = 73.57, 95% confidence interval 55.00 and 111.00
-    Mean threshold_per = 0.68, 95% confidence interval 0.46 and 0.95
-    Mean auprc = 0.88, 95% confidence interval 0.84 and 0.91
-    Mean auroc = 0.72, 95% confidence interval 0.63 and 0.80
+    Mean specificity = 0.82, 95% confidence interval 0.67 and 0.93
+    Mean sensitivity = 0.56, 95% confidence interval 0.38 and 0.72
+    Mean ppv = 0.90, 95% confidence interval 0.85 and 0.95
+    Mean npv = 0.39, 95% confidence interval 0.27 and 0.56
+    Mean f1 = 0.68, 95% confidence interval 0.54 and 0.79
+    Mean accuracy = 0.62, 95% confidence interval 0.49 and 0.73
+    Mean threshold = 89.16, 95% confidence interval 66.00 and 114.03
+    Mean threshold_per = 0.81, 95% confidence interval 0.59 and 0.97
+    Mean auprc = 0.87, 95% confidence interval 0.84 and 0.91
+    Mean auroc = 0.67, 95% confidence interval 0.56 and 0.77
 
 
 
@@ -275,21 +277,21 @@ if __name__ == '__main__':
     cutoff_analysis(X='FeNO', y='ISE_Eo3%', data=df_orig.query('Asthma == 0'), youden=True, file_nm='feno_cut_sub_h.csv')
 ```
 
-    1    180
-    0     88
+    1    375
+    0    137
     Name: ISE_Eo3%, dtype: int64
     
     Blood Eosinophil Counts
-    Mean specificity = 0.87, 95% confidence interval 0.83 and 0.91
-    Mean sensitivity = 0.73, 95% confidence interval 0.69 and 0.77
-    Mean ppv = 0.92, 95% confidence interval 0.90 and 0.95
-    Mean npv = 0.61, 95% confidence interval 0.57 and 0.65
-    Mean f1 = 0.82, 95% confidence interval 0.79 and 0.84
-    Mean accuracy = 0.78, 95% confidence interval 0.75 and 0.81
-    Mean threshold = 284.62, 95% confidence interval 250.32 and 290.19
-    Mean threshold_per = 0.69, 95% confidence interval 0.60 and 0.85
-    Mean auprc = 0.91, 95% confidence interval 0.89 and 0.93
-    Mean auroc = 0.84, 95% confidence interval 0.81 and 0.87
+    Mean specificity = 0.82, 95% confidence interval 0.69 and 0.88
+    Mean sensitivity = 0.75, 95% confidence interval 0.68 and 0.86
+    Mean ppv = 0.91, 95% confidence interval 0.88 and 0.94
+    Mean npv = 0.56, 95% confidence interval 0.50 and 0.66
+    Mean f1 = 0.82, 95% confidence interval 0.78 and 0.87
+    Mean accuracy = 0.77, 95% confidence interval 0.73 and 0.82
+    Mean threshold = 260.34, 95% confidence interval 188.16 and 289.00
+    Mean threshold_per = 0.70, 95% confidence interval 0.54 and 0.82
+    Mean auprc = 0.91, 95% confidence interval 0.90 and 0.93
+    Mean auroc = 0.83, 95% confidence interval 0.80 and 0.86
 
 
 
@@ -306,16 +308,16 @@ if __name__ == '__main__':
 
     
     FeNO
-    Mean specificity = 0.85, 95% confidence interval 0.75 and 0.93
-    Mean sensitivity = 0.73, 95% confidence interval 0.63 and 0.83
-    Mean ppv = 0.92, 95% confidence interval 0.88 and 0.96
-    Mean npv = 0.59, 95% confidence interval 0.49 and 0.69
-    Mean f1 = 0.81, 95% confidence interval 0.75 and 0.87
-    Mean accuracy = 0.77, 95% confidence interval 0.71 and 0.82
-    Mean threshold = 60.57, 95% confidence interval 44.00 and 75.00
-    Mean threshold_per = 0.70, 95% confidence interval 0.51 and 0.90
-    Mean auprc = 0.92, 95% confidence interval 0.89 and 0.94
-    Mean auroc = 0.83, 95% confidence interval 0.78 and 0.87
+    Mean specificity = 0.81, 95% confidence interval 0.67 and 0.91
+    Mean sensitivity = 0.72, 95% confidence interval 0.58 and 0.86
+    Mean ppv = 0.92, 95% confidence interval 0.87 and 0.95
+    Mean npv = 0.51, 95% confidence interval 0.39 and 0.67
+    Mean f1 = 0.80, 95% confidence interval 0.71 and 0.88
+    Mean accuracy = 0.74, 95% confidence interval 0.65 and 0.83
+    Mean threshold = 62.18, 95% confidence interval 41.00 and 78.00
+    Mean threshold_per = 0.76, 95% confidence interval 0.58 and 0.92
+    Mean auprc = 0.92, 95% confidence interval 0.90 and 0.94
+    Mean auroc = 0.80, 95% confidence interval 0.74 and 0.85
 
 
 
@@ -330,21 +332,21 @@ if __name__ == '__main__':
     
 
 
-    0    341
-    1     60
+    0    772
+    1    143
     Name: ISE_Eo3%, dtype: int64
     
     Blood Eosinophil Counts
-    Mean specificity = 0.76, 95% confidence interval 0.70 and 0.81
-    Mean sensitivity = 0.80, 95% confidence interval 0.73 and 0.88
-    Mean ppv = 0.38, 95% confidence interval 0.33 and 0.42
-    Mean npv = 0.96, 95% confidence interval 0.94 and 0.97
-    Mean f1 = 0.51, 95% confidence interval 0.47 and 0.56
-    Mean accuracy = 0.77, 95% confidence interval 0.72 and 0.80
-    Mean threshold = 181.23, 95% confidence interval 162.80 and 208.32
-    Mean threshold_per = 0.12, 95% confidence interval 0.08 and 0.16
-    Mean auprc = 0.50, 95% confidence interval 0.43 and 0.57
-    Mean auroc = 0.83, 95% confidence interval 0.80 and 0.86
+    Mean specificity = 0.71, 95% confidence interval 0.63 and 0.76
+    Mean sensitivity = 0.76, 95% confidence interval 0.70 and 0.84
+    Mean ppv = 0.38, 95% confidence interval 0.33 and 0.43
+    Mean npv = 0.93, 95% confidence interval 0.91 and 0.95
+    Mean f1 = 0.50, 95% confidence interval 0.46 and 0.55
+    Mean accuracy = 0.72, 95% confidence interval 0.67 and 0.76
+    Mean threshold = 183.11, 95% confidence interval 157.32 and 209.76
+    Mean threshold_per = 0.13, 95% confidence interval 0.10 and 0.16
+    Mean auprc = 0.46, 95% confidence interval 0.40 and 0.51
+    Mean auroc = 0.78, 95% confidence interval 0.75 and 0.81
 
 
 
@@ -361,16 +363,16 @@ if __name__ == '__main__':
 
     
     FeNO
-    Mean specificity = 0.71, 95% confidence interval 0.20 and 1.00
-    Mean sensitivity = 0.51, 95% confidence interval 0.11 and 1.00
-    Mean ppv = 0.75, 95% confidence interval 0.44 and 1.00
-    Mean npv = 0.70, 95% confidence interval 0.48 and 1.00
-    Mean f1 = 0.47, 95% confidence interval 0.20 and 0.74
-    Mean accuracy = 0.61, 95% confidence interval 0.51 and 0.71
-    Mean threshold = 60.61, 95% confidence interval 9.00 and 112.00
-    Mean threshold_per = 0.41, 95% confidence interval 0.04 and 0.97
-    Mean auprc = 0.55, 95% confidence interval 0.46 and 0.64
-    Mean auroc = 0.52, 95% confidence interval 0.37 and 0.66
+    Mean specificity = 0.78, 95% confidence interval 0.13 and 0.98
+    Mean sensitivity = 0.39, 95% confidence interval 0.14 and 1.00
+    Mean ppv = 0.77, 95% confidence interval 0.57 and 0.92
+    Mean npv = 0.56, 95% confidence interval 0.37 and 1.00
+    Mean f1 = 0.44, 95% confidence interval 0.25 and 0.81
+    Mean accuracy = 0.56, 95% confidence interval 0.44 and 0.70
+    Mean threshold = 75.47, 95% confidence interval 5.00 and 112.00
+    Mean threshold_per = 0.49, 95% confidence interval 0.05 and 0.84
+    Mean auprc = 0.59, 95% confidence interval 0.50 and 0.68
+    Mean auroc = 0.44, 95% confidence interval 0.30 and 0.57
 
 
 
