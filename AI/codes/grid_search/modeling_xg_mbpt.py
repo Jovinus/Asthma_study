@@ -6,23 +6,24 @@ import pandas as pd
 import xgboost as xgb
 from IPython.display import display
 from sklearn.metrics import confusion_matrix, auc, roc_curve, precision_recall_curve
-pd.set_option("display.max_columns", None)
 import os
+import matplotlib.pyplot as plt
+pd.set_option("display.max_columns", None)
 
 # %%
 def performances_hard_decision(y_test, y_proba, threshold_of_interest=0.5, youden=False):
     
     fpr, tpr, thresholds = roc_curve(y_test, y_proba)
     roc_auc = auc(fpr, tpr)
-    
+
     precision, recall, _ = precision_recall_curve(y_test, y_proba)
     pr_auc = auc(recall, precision)
-
     
     if(youden):
         threshold_of_interest = thresholds[np.argmax(tpr - fpr)]
     
     y_pred = y_proba >= threshold_of_interest
+    
     tn, fp, fn, tp = confusion_matrix(y_test, y_pred).ravel()
 
     ppv = tp / (tp+fp)
@@ -32,11 +33,73 @@ def performances_hard_decision(y_test, y_proba, threshold_of_interest=0.5, youde
     accuracy = (tp+tn) / (tp+tn+fp+fn)
     f1 = (2 * ppv * sensitivity) / (ppv + sensitivity)
     
-    return ppv, npv, sensitivity, specificity, accuracy, f1, threshold_of_interest
+    return specificity, sensitivity, ppv, npv, f1, accuracy, threshold_of_interest, roc_auc, pr_auc, fpr, tpr, precision, recall
+
+def plot_roc_curve(x, y, data, mean, std):
+    x = np.array(data[x]).reshape(-1, 100)
+    y = np.array(data[y]).reshape(-1, 100)
+    
+    mean_tpr = y.mean(axis=0).reshape(-1)
+    mean_tpr[-1] = 1.0
+    mean_fpr = x.mean(axis=0).reshape(-1)
+
+    fig, ax = plt.subplots(1, 1, figsize=(10, 10))
+    plt.grid()
+    # sns.lineplot(x=x, y=y, data=data, ax=ax, label=f'AUROC = {mean:.2f} $\pm$ {std:.2f}')
+    ax.plot(mean_fpr, mean_tpr, label=f'AUROC = {mean:.2f} $\pm$ {std:.2f}')
+    plt.xlabel("1 - Specificity")
+    plt.ylabel("Sensitivity")
+    
+    std_tpr = y.std(axis=0)
+    tprs_upper = np.minimum(mean_tpr + std_tpr, 1)
+    tprs_lower = np.maximum(mean_tpr - std_tpr, 0)
+    ax.fill_between(
+        mean_fpr,
+        tprs_lower,
+        tprs_upper,
+        color="grey",
+        alpha=0.2,
+        label=r"$\pm$ 1 std. dev.",
+    )
+    
+    ax.plot([0, 1], [0, 1], linestyle="--", lw=2, color="r", label="Chance", alpha=0.8)
+    plt.legend()
+    plt.show()
+
+def plot_prc_curve(x, y, data, mean, std):
+    x = np.array(data[x]).reshape(-1, 100)
+    y = np.array(data[y]).reshape(-1, 100)
+    
+    mean_tpr = y.mean(axis=0).reshape(-1)
+    mean_tpr[-1] = 0
+    mean_fpr = x.mean(axis=0).reshape(-1)
+
+    fig, ax = plt.subplots(1, 1, figsize=(10, 10))
+    plt.grid()
+    # sns.lineplot(x=x, y=y, data=data, ax=ax, label=f'AUROC = {mean:.2f} $\pm$ {std:.2f}')
+    ax.plot(mean_fpr, mean_tpr, label=f'AUPRC = {mean:.2f} $\pm$ {std:.2f}')
+    plt.xlabel("Recall")
+    plt.ylabel("Precision")
+    
+    std_tpr = y.std(axis=0)
+    tprs_upper = np.minimum(mean_tpr + std_tpr, 1)
+    tprs_lower = np.maximum(mean_tpr - std_tpr, 0)
+    ax.fill_between(
+        mean_fpr,
+        tprs_lower,
+        tprs_upper,
+        color="grey",
+        alpha=0.2,
+        label=r"$\pm$ 1 std. dev.",
+    )
+    plt.legend()
+    plt.show()
 # %% Load dataset
-DATA_PATH = "/home/lkh256/Studio/Asthma/AI/data"
-df_init = pd.read_excel(os.path.join(DATA_PATH, "asthma_dataset_final.xlsx"), \
-                        sheet_name="746 (소아2 중복3 missing 8제거)")
+DATA_PATH = "/home/lkh256/Studio/Asthma/DB/data"
+# df_init = pd.read_excel(os.path.join(DATA_PATH, "asthma_dataset_final.xlsx"), \
+#                         sheet_name="746 (소아2 중복3 missing 8제거)")
+df_init = pd.read_csv(os.path.join(DATA_PATH, 'asthma_ai_dataset.csv'), encoding='utf-8')
+df_init['IndexDate'] = df_init['IndexDate'].astype('datetime64')
 
 print("Number of samples = {}".format(len(df_init)))
 display(df_init.head())
@@ -56,10 +119,12 @@ mbpt_txt = [x for x in df_init.columns if re.search(subs, str(x))]
 # %%
 from sklearn.model_selection import train_test_split
 
-train_set, test_set = train_test_split(df_init,  
-                                       random_state=1004, 
-                                       stratify=df_init['Asthma'], 
-                                       test_size=0.2)
+# train_set, test_set = train_test_split(df_init,  
+#                                        random_state=1004, 
+#                                        stratify=df_init['Asthma'], 
+#                                        test_size=0.2)
+
+train_set, test_set = df_init.query('IndexDate.dt.year <= 2018', engine='python'), df_init.query('IndexDate.dt.year > 2018', engine='python')
 
 print("Train set size = {}".format(len(train_set)))
 print("Test set size = {}".format(len(test_set)))
@@ -83,6 +148,9 @@ hyper_num_boost_round = [5, 10, 15]
 threshold = 0.5
 
 results = {}
+
+mean_fpr = np.linspace(0, 1, 100)
+mean_recall = np.linspace(0, 1, 100)
 
 for hyper_lr in tqdm(hyper_param_lr, desc= 'l_rate'):
 
@@ -155,7 +223,7 @@ for hyper_lr in tqdm(hyper_param_lr, desc= 'l_rate'):
                         test_auroc = roc_auc_score(y_true=y_test, y_score=model_xgb.predict(dtest))
                         test_auprc = average_precision_score(y_true=y_test, y_score=model_xgb.predict(dtest))
                         
-                        ppv, npv, sensitivity, specificity, accuracy, f1, threshold_of_interest = performances_hard_decision(y_test=y_test, y_proba=model_xgb.predict(dtest), youden=True)
+                        specificity, sensitivity, ppv, npv, f1, accuracy, threshold_of_interest, roc_auc, pr_auc, fpr, tpr, precision, recall = performances_hard_decision(y_test, model_xgb.predict(dtest), youden=True)
 
                         test_scores.append(test_score)
                         test_mse_loss.append(test_loss)

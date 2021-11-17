@@ -96,7 +96,7 @@ for hyper_lr in tqdm(hyper_param_lr, desc= 'l_rate'):
             
             for hyper_gamma in tqdm(hyper_param_gamma, desc= 'gamma'):
 
-                skf = RepeatedStratifiedKFold(n_splits=5, n_repeats=20)
+                skf = RepeatedStratifiedKFold(n_splits=5, n_repeats=6)
 
                 val_scores = []
                 val_mse_loss = []
