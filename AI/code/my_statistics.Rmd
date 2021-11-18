@@ -1,7 +1,19 @@
 ---
 title: "Statistics for Asthma AI Model Studyk"
-output: html_notebook
+output:
+  html_notebook: default
+  pdf_document: default
+  word_document: default
 ---
+
+<style type="text/css">
+.main-container {
+  max-width: 1500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
+
 
 # 1. Read Data
 
@@ -29,9 +41,7 @@ df_orig %<>% mutate_at(vars(-c(Sex_f1m2, Smk, Sx_dyspnea, Sx_cough, Sx_wheezing,
 # 3. Table One
 
 ```{r}
-output_table <- mytable(Asthma ~ AgeAtDx + Sex_f1m2 + BMI + Sx_dyspnea + Sx_cough + Sx_wheezing + Co_rhinitis + Skintest + IgE + Lab_EosCount + FeNO + ISE_Eos + ISE_Neu, data=df_orig, digits=2)
-output_table <- summary(output_table)
-output_table
+mytable(Asthma ~ AgeAtDx + Sex_f1m2 + BMI + Sx_dyspnea + Sx_cough + Sx_wheezing + Co_rhinitis + Skintest + IgE + Lab_EosCount + FeNO + ISE_Eos + ISE_Neu, data=df_orig, digits=2)
 ```
 
 # 4. Result Statistics
@@ -40,8 +50,15 @@ output_table
 
 ```{r}
 metrics <- fread('../result/selected_metric/selected_metric.csv')
+metrics %<>% mutate(feature =  factor(feature, levels = c('mbpt_result_pc20', 'mbpt_result_ise', 'mbpt_result_feno', 'mbpt_result_feno_ise', 'mbpt_txt', 'mbpt_txt_ise', 'mbpt_txt_feno', 'mbpt_txt_feno_ise')))
 metrics
 ```
+## Mean and STD of Metrics
+```{r}
+mytable(feature ~ test_specificity + test_sensitivity + test_ppv + test_npv + test_f1 + test_accuracy + test_roc_auc + test_pr_auc, data=metrics, digits=2)
+```
+
+
 
 ## Multiple Comparison
 
@@ -55,7 +72,8 @@ fig <- ggplot(metrics, aes(x=feature, y=test_accuracy, fill=feature)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5))
 
 fig
-
+```
+```{r}
 results <- pairwise.t.test(x = metrics$test_accuracy, g = metrics$feature, p.adjust.method = "bonferroni")
 results
 ```
@@ -71,10 +89,12 @@ fig <- ggplot(metrics, aes(x=feature, y=test_roc_auc, fill=feature)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5))
 
 fig
-
+```
+```{r}
 results <- pairwise.t.test(x = metrics$test_roc_auc, g = metrics$feature, p.adjust.method = "bonferroni")
 results
 ```
+
 
 ### AUPRC
 ```{r}
@@ -86,10 +106,12 @@ fig <- ggplot(metrics, aes(x=feature, y=test_pr_auc, fill=feature)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5))
 
 fig
-
+```
+```{r}
 results <- pairwise.t.test(x = metrics$test_pr_auc, g = metrics$feature, p.adjust.method = "bonferroni")
 results
 ```
+
 
 ### Sensitivity
 ```{r}
@@ -101,10 +123,12 @@ fig <- ggplot(metrics, aes(x=feature, y=test_sensitivity, fill=feature)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5))
 
 fig
-
+```
+```{r}
 results <- pairwise.t.test(x = metrics$test_sensitivity, g = metrics$feature, p.adjust.method = "bonferroni")
 results
 ```
+
 
 ### Specificity
 ```{r}
@@ -116,7 +140,8 @@ fig <- ggplot(metrics, aes(x=feature, y=test_specificity, fill=feature)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5))
 
 fig
-
+```
+```{r}
 results <- pairwise.t.test(x = metrics$test_specificity, g = metrics$feature, p.adjust.method = "bonferroni")
 results
 ```
@@ -132,7 +157,8 @@ fig <- ggplot(metrics, aes(x=feature, y=test_f1, fill=feature)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5))
 
 fig
-
+```
+```{r}
 results <- pairwise.t.test(x = metrics$test_f1, g = metrics$feature, p.adjust.method = "bonferroni")
 results
 ```
