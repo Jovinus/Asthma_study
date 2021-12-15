@@ -194,3 +194,14 @@ for param_grid in tqdm(ParameterGrid(param_grids)):
 # %%
 result.to_csv("../../result/ai_metric_results_" + args['file_nm'] + ".csv", index=False)
 fig_result.to_csv("../../result/ai_fig_results_" + args['file_nm'] + ".csv", index=False)
+
+# %%
+specificity, sensitivity, ppv, npv, f1, accuracy, threshold_of_interest, roc_auc, pr_auc, fpr, tpr, precision, recall = performances_hard_decision(test_set['Asthma'], test_set['MBPT_result'])
+# %%
+baseline = pd.DataFrame({'test_specificity':[specificity], 'test_sensitivity':[sensitivity], 
+                         'test_ppv':[ppv], 'test_npv':[npv], 'test_f1':[f1], 'test_accuracy':[accuracy], 
+                         'test_threshold':[threshold_of_interest], 
+                         'test_roc_auc':[roc_auc], 'test_pr_auc':[pr_auc], 'test_loss':[0], 'feature':['baseline']})
+
+baseline.to_csv("../result/baseline_metric.csv", index=False)
+# %%
