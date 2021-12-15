@@ -15,8 +15,7 @@ subs = r"0.05|0.5|2.0|8.0|16.0|32.0"
 mbpt_txt = [x for x in df_cur_ai_db.columns if re.search(subs, str(x))]
 baseline_feature = ['PtID', 'IndexDate', 'AgeAtDx', 'Sex_f1m2', 'BMI', 
                     'Smk', 'Sx_dyspnea', 'Sx_cough', 'Sx_wheezing', 
-                    'Co_rhinitis', 'Skintest', 'IgE', 'Sx_cough', 
-                    'Sx_wheezing', 'Asthma', 'MBPT_result', 'PC20_16', 
+                    'Co_rhinitis', 'Skintest', 'IgE', 'Asthma', 'MBPT_result', 'PC20_16', 
                     'FeNO', 'ISE_Eo3%', 'ISE_Eos', 'ISE_Neu', 'Lab_EosCount', 'Lab_Eos(%)']
 # %%
 df_new_db = df_new_db[baseline_feature + mbpt_txt]
