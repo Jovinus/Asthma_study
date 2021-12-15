@@ -38,8 +38,14 @@ for metric_data, fig_data in zip(metric_data_list, fig_data_list):
     metric_results = pd.concat((metric_results, df_metric), axis=0)
     fig_results = pd.concat((fig_results, df_fig), axis=0)
 
+metric_results = metric_results[[x for x in metric_results.columns if re.search('test', x)] + ['feature']]
+
+metric_baseline = pd.read_csv("../result/baseline_metric.csv")
+
+metric_results = pd.concat((metric_results, metric_baseline), axis=0).reset_index(drop=True)
+
 # %%
-feature_order = ['mbpt_result_pc20', 'mbpt_result_feno', 'mbpt_result_ise', 'mbpt_result_feno_ise',
+feature_order = ['baseline', 'mbpt_result_pc20', 'mbpt_result_feno', 'mbpt_result_ise', 'mbpt_result_feno_ise',
                  'mbpt_txt', 'mbpt_txt_feno', 'mbpt_txt_ise', 'mbpt_txt_feno_ise']
 
 # %%
@@ -59,4 +65,14 @@ for feature in feature_order:
 # %%
 metric_results.to_csv('../result/selected_metric/selected_metric.csv', index=False, encoding='utf-8')
 fig_results.to_csv('../result/selected_metric/selected_fig.csv', index=False, encoding='utf-8')
+# %%
+
+feature_order = ['baseline', 'mbpt_txt']
+
+for metric in metric_columns:
+    fig, ax = plt.subplots(1, 1, figsize=(5,10))
+    sns.barplot(x='feature', y=metric, data=metric_results, ax=ax, order=feature_order)
+    plt.grid()
+    plt.xticks(rotation=45)
+    plt.show()
 # %%
