@@ -1,0 +1,165 @@
+---
+title: "Statistics for Asthma AI Model Studyk"
+output:
+  html_notebook: default
+  pdf_document: default
+  word_document: default
+---
+
+<style type="text/css">
+.main-container {
+  max-width: 1500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
+
+
+# 1. Read Data
+
+```{r}
+library(data.table)
+library(moonBook)
+library(tidyverse)
+library(magrittr)
+library(ggplot2)
+```
+
+
+```{r}
+df_orig <- fread("../../DB/data/asthma_ai_dataset.csv", na.strings = c('NA', '.'))
+df_orig
+```
+# 2. Data Preprocessing
+
+```{r}
+df_orig %<>% mutate_at(vars(Sex_f1m2, Smk, Sx_dyspnea, Sx_cough, Sx_wheezing, Co_rhinitis, Skintest, Asthma, MBPT_result), funs(factor))
+df_orig %<>% mutate_at(vars(-c(Sex_f1m2, Smk, Sx_dyspnea, Sx_cough, Sx_wheezing, Co_rhinitis, Skintest, Asthma, MBPT_result)), funs(as.numeric))
+```
+
+
+# 3. Table One
+
+```{r}
+mytable(Asthma ~ AgeAtDx + Sex_f1m2 + BMI + Sx_dyspnea + Sx_cough + Sx_wheezing + Co_rhinitis + Skintest + IgE + Lab_EosCount + FeNO + ISE_Eos + ISE_Neu, data=df_orig, digits=2)
+```
+
+# 4. Result Statistics
+
+## Load Results
+
+```{r}
+metrics <- fread('../result/selected_metric/selected_metric.csv')
+metrics %<>% mutate(feature =  factor(feature, levels = c('mbpt_result_pc20', 'mbpt_result_ise', 'mbpt_result_feno', 'mbpt_result_feno_ise', 'mbpt_txt', 'mbpt_txt_ise', 'mbpt_txt_feno', 'mbpt_txt_feno_ise')))
+metrics
+```
+## Mean and STD of Metrics
+```{r}
+mytable(feature ~ test_specificity + test_sensitivity + test_ppv + test_npv + test_f1 + test_accuracy + test_roc_auc + test_pr_auc, data=metrics, digits=2)
+```
+
+
+
+## Multiple Comparison
+
+### Accuracy
+```{r}
+fig <- ggplot(metrics, aes(x=feature, y=test_accuracy, fill=feature)) +
+  geom_boxplot() + 
+  geom_jitter(alpha=0.5, height = 0.00001, width = 0.3) +
+  labs(x='Feature', y='Accuracy') +
+  theme_light() + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5))
+
+fig
+```
+```{r}
+results <- pairwise.t.test(x = metrics$test_accuracy, g = metrics$feature, p.adjust.method = "bonferroni")
+results
+```
+
+
+### AUROC
+```{r}
+fig <- ggplot(metrics, aes(x=feature, y=test_roc_auc, fill=feature)) +
+  geom_boxplot() + 
+  geom_jitter(alpha=0.5, height = 0.00001, width = 0.3) +
+  labs(x='Feature', y='AUROC') +
+  theme_light() + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5))
+
+fig
+```
+```{r}
+results <- pairwise.t.test(x = metrics$test_roc_auc, g = metrics$feature, p.adjust.method = "bonferroni")
+results
+```
+
+
+### AUPRC
+```{r}
+fig <- ggplot(metrics, aes(x=feature, y=test_pr_auc, fill=feature)) +
+  geom_boxplot() + 
+  geom_jitter(alpha=0.5, height = 0.00001, width = 0.3) +
+  labs(x='Feature', y='AUPRC') +
+  theme_light() + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5))
+
+fig
+```
+```{r}
+results <- pairwise.t.test(x = metrics$test_pr_auc, g = metrics$feature, p.adjust.method = "bonferroni")
+results
+```
+
+
+### Sensitivity
+```{r}
+fig <- ggplot(metrics, aes(x=feature, y=test_sensitivity, fill=feature)) +
+  geom_boxplot() + 
+  geom_jitter(alpha=0.5, height = 0.00001, width = 0.3) +
+  labs(x='Feature', y='Sensitivity') +
+  theme_light() + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5))
+
+fig
+```
+```{r}
+results <- pairwise.t.test(x = metrics$test_sensitivity, g = metrics$feature, p.adjust.method = "bonferroni")
+results
+```
+
+
+### Specificity
+```{r}
+fig <- ggplot(metrics, aes(x=feature, y=test_specificity, fill=feature)) +
+  geom_boxplot() + 
+  geom_jitter(alpha=0.5, height = 0.00001, width = 0.3) +
+  labs(x='Feature', y='Specificity') +
+  theme_light() + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5))
+
+fig
+```
+```{r}
+results <- pairwise.t.test(x = metrics$test_specificity, g = metrics$feature, p.adjust.method = "bonferroni")
+results
+```
+
+
+### F1 Score
+```{r}
+fig <- ggplot(metrics, aes(x=feature, y=test_f1, fill=feature)) +
+  geom_boxplot() + 
+  geom_jitter(alpha=0.5, height = 0.00001, width = 0.3) +
+  labs(x='Feature', y='F1') +
+  theme_light() + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 0.5, vjust = 0.5))
+
+fig
+```
+```{r}
+results <- pairwise.t.test(x = metrics$test_f1, g = metrics$feature, p.adjust.method = "bonferroni")
+results
+```
+

@@ -1,0 +1,93 @@
+---
+title: "Statistics for Induced Sputum Analysis"
+output:
+  html_notebook: default
+  pdf_document: default
+  word_document: default
+---
+
+<style type="text/css">
+.main-container {
+  max-width: 1500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
+
+
+# 1. Read Data
+
+```{r}
+library(data.table)
+library(moonBook)
+library(tidyverse)
+library(magrittr)
+library(ggplot2)
+library(ggpubr)
+```
+
+
+```{r}
+df_orig <- fread("../../DB/data/ISE_3_cut_dataset.csv", na.strings = c('NA', '.'))
+df_orig
+```
+# 2. Data Preprocessing
+
+```{r}
+df_orig %<>% mutate_at(vars(Sex_f1m2, Smk, Sx_dyspnea, Sx_cough, Sx_wheezing, Co_rhinitis, Skintest, Asthma, MBPT_result), funs(factor))
+df_orig %<>% mutate(`ISE_Eo3%` = factor(`ISE_Eo3%`, levels = c(0, 1)))
+df_orig %<>% mutate_at(vars(-c(Sex_f1m2, Smk, Sx_dyspnea, Sx_cough, Sx_wheezing, Co_rhinitis, Skintest, Asthma, MBPT_result, `ISE_Eo3%`)), funs(as.numeric))
+```
+
+
+# 3. Table One
+
+```{r}
+mytable(`ISE_Eo3%` ~ AgeAtDx + Sex_f1m2 + BMI + Sx_dyspnea + Sx_cough + Sx_wheezing + Co_rhinitis + Skintest + IgE + Lab_EosCount + FeNO + ISE_Eos + ISE_Neu, data=df_orig, digits=2)
+```
+
+# 4. Scatter Plot
+```{r}
+fig <- ggplot(df_orig, aes(x=FeNO, y=ISE_Eos)) +
+  geom_point() + 
+  stat_cor(label.x.npc = 0.75) +
+  geom_jitter(alpha=0.5, height = 0.00001, width = 0.3) +
+  labs(x='FeNO', y='Induced Sputum Eosinphil %') +
+  theme_light()
+
+fig
+```
+```{r}
+fig <- ggplot(df_orig, aes(x=FeNO, y=ISE_Neu)) +
+  geom_point() + 
+  stat_cor(label.x.npc = 0.75) +
+  geom_jitter(alpha=0.5, height = 0.00001, width = 0.3) +
+  labs(x='FeNO', y='Induced Sputum Neutrophil %') +
+  theme_light() +
+  ylim(0, 100)
+
+fig
+```
+```{r}
+fig <- ggplot(df_orig, aes(x=`Lab_Eos(%)`, y=ISE_Eos)) +
+  geom_point() + 
+  stat_cor(label.x.npc = 0.75) +
+  geom_jitter(alpha=0.5, height = 0.00001, width = 0.3) +
+  labs(x='Blood Eosinphil %', y='Induced Sputum Eosinphil %') +
+  theme_light()
+
+fig
+```
+
+```{r}
+fig <- ggplot(df_orig, aes(x=`Lab_Eos(%)`, y=ISE_Neu)) +
+  geom_point() + 
+  stat_cor(label.x.npc = 0.75) +
+  geom_jitter(alpha=0.5, height = 0.00001, width = 0.3) +
+  labs(x='Blood Eosinphil %', y='Induced Sputum Neutrophil %') +
+  theme_light() + 
+  ylim(0, 100)
+
+fig
+```
+
