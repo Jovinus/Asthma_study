@@ -201,7 +201,7 @@ if __name__ == '__main__':
 
     print('\nFeNO')
     cutoff_analysis(X='FeNO', y='ISE_Eo3%', data=df_orig, youden=True, file_nm='feno_cut.csv')
-# %%
+# %% Asthma
     print(df_orig.query('Asthma == 1')['ISE_Eo3%'].value_counts())
     print('\nBlood Eosinophil Counts')
     cutoff_analysis(X='Lab_EosCount', y='ISE_Eo3%', data=df_orig.query('Asthma == 1'), youden=True, file_nm='bl_cut_sub_a.csv')
@@ -216,4 +216,34 @@ if __name__ == '__main__':
 
     print('\nFeNO')
     cutoff_analysis(X='FeNO', y='ISE_Eo3%', data=df_orig.query('Asthma == 0'), youden=True, file_nm='feno_cut_sub_h.csv')
+# %% Cough
+    print(df_orig.query('Sx_cough == 1')['ISE_Eo3%'].value_counts())
+    print('\nBlood Eosinophil Counts')
+    cutoff_analysis(X='Lab_EosCount', y='ISE_Eo3%', data=df_orig.query('Sx_cough == 1'), youden=True, file_nm='bl_cut_sub_a.csv')
+
+    print('\nFeNO')
+    cutoff_analysis(X='FeNO', y='ISE_Eo3%', data=df_orig.query('Sx_cough == 1'), youden=True, file_nm='feno_cut_sub_a.csv')
+    
+    print(df_orig.query('Sx_cough == 0')['ISE_Eo3%'].value_counts())
+    
+    print('\nBlood Eosinophil Counts')
+    cutoff_analysis(X='Lab_EosCount', y='ISE_Eo3%', data=df_orig.query('Sx_cough == 0'), youden=True, file_nm='bl_cut_sub_h.csv')
+
+    print('\nFeNO')
+    cutoff_analysis(X='FeNO', y='ISE_Eo3%', data=df_orig.query('Sx_cough == 0'), youden=True, file_nm='feno_cut_sub_h.csv')
+# %% Wheezing
+    print(df_orig.query('Sx_wheezing == 1')['ISE_Eo3%'].value_counts())
+    print('\nBlood Eosinophil Counts')
+    cutoff_analysis(X='Lab_EosCount', y='ISE_Eo3%', data=df_orig.query('Sx_wheezing == 1'), youden=True, file_nm='bl_cut_sub_a.csv')
+
+    print('\nFeNO')
+    cutoff_analysis(X='FeNO', y='ISE_Eo3%', data=df_orig.query('Sx_wheezing == 1'), youden=True, file_nm='feno_cut_sub_a.csv')
+    
+    print(df_orig.query('Sx_wheezing == 0')['ISE_Eo3%'].value_counts())
+    
+    print('\nBlood Eosinophil Counts')
+    cutoff_analysis(X='Lab_EosCount', y='ISE_Eo3%', data=df_orig.query('Sx_wheezing == 0'), youden=True, file_nm='bl_cut_sub_h.csv')
+
+    print('\nFeNO')
+    cutoff_analysis(X='FeNO', y='ISE_Eo3%', data=df_orig.query('Sx_wheezing == 0'), youden=True, file_nm='feno_cut_sub_h.csv')
 # %%
