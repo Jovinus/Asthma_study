@@ -50,7 +50,7 @@ mytable(Asthma ~ AgeAtDx + Sex_f1m2 + BMI + Sx_dyspnea + Sx_cough + Sx_wheezing 
 
 ```{r}
 metrics <- fread('../result/selected_metric/selected_metric.csv')
-metrics %<>% mutate(feature =  factor(feature, levels = c('mbpt_result_pc20', 'mbpt_result_ise', 'mbpt_result_feno', 'mbpt_result_feno_ise', 'mbpt_txt', 'mbpt_txt_ise', 'mbpt_txt_feno', 'mbpt_txt_feno_ise')))
+metrics %<>% mutate(feature =  factor(feature, levels = c('baseline', 'mbpt_result_pc20', 'mbpt_result_ise', 'mbpt_result_feno', 'mbpt_result_feno_ise', 'mbpt_txt', 'mbpt_txt_ise', 'mbpt_txt_feno', 'mbpt_txt_feno_ise')))
 metrics
 ```
 ## Mean and STD of Metrics
