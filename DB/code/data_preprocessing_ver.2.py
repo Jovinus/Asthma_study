@@ -45,8 +45,26 @@ df_ai_db = df_ai_db.assign(SkinTest = lambda x: np.where(x['Skintest_new'].notnu
 
 df_cut_db = pd.merge(df_cut_db, df_skin, on=['PtID', 'IndexDate'], how='left')
 df_cut_db = df_cut_db.assign(SkinTest = lambda x: np.where(x['Skintest_new'].notnull(), x['Skintest_new'], x['Skintest'].map({1:1, 2:1})))
+
+# %%
+
+df_master = pd.read_excel("../data/asthma_dataset.xlsx")
+patient_list = list(df_master['PtID'])
+
+df_ai_db = df_ai_db.query("PtID.isin(@patient_list)", engine='python').drop(columns=['BMI', 'Smk', 'Sx_dyspnea', 'Sx_cough', 'Sx_wheezing', 'Co_rhinitis'])
+df_ai_db = pd.merge(df_ai_db, df_master[['PtID', 'BMI', 'Smk', 'Sx_dyspnea', 'Sx_cough', 'Sx_wheezing', 'Co_rhinitis']], how='left', on='PtID')
+
+df_cut_db = df_cut_db.query("PtID.isin(@patient_list)", engine='python').drop(columns=['BMI', 'Smk', 'Sx_dyspnea', 'Sx_cough', 'Sx_wheezing', 'Co_rhinitis'])
+df_cut_db = pd.merge(df_cut_db, df_master[['PtID', 'BMI', 'Smk', 'Sx_dyspnea', 'Sx_cough', 'Sx_wheezing', 'Co_rhinitis']], how='left', on='PtID')
+
+baseline_feature = ['PtID', 'IndexDate', 'AgeAtDx', 'Sex_f1m2', 'BMI', 
+                    'Smk', 'Sx_dyspnea', 'Sx_cough', 'Sx_wheezing', 
+                    'Co_rhinitis', 'SkinTest', 'IgE', 'Asthma', 'MBPT_result', 'PC20_16', 
+                    'FeNO', 'ISE_Eo3%', 'ISE_Eos', 'ISE_Neu', 'Lab_EosCount', 'Lab_Eos(%)']
+
+df_ai_db = df_ai_db[baseline_feature + mbpt_txt]
+df_cut_db = df_cut_db[baseline_feature + mbpt_txt]
+
 # %%
 df_ai_db.to_csv('../data/asthma_ai_dataset.csv', index=False, encoding='utf-8')
 df_cut_db.to_csv('../data/ISE_3_cut_dataset.csv', index=False, encoding='utf-8')
-
-# %%
