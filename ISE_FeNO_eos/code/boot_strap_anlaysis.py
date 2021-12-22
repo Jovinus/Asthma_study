@@ -196,12 +196,14 @@ if __name__ == '__main__':
     #                         sheet_name='669 (77 missing eos제외)')
     df_orig = pd.read_csv('../../DB/data/ISE_3_cut_dataset.csv')
     
+    print("Baseline")
     print('Blood Eosinophil Counts')
     cutoff_analysis(X='Lab_EosCount', y='ISE_Eo3%', data=df_orig, youden=True, file_nm='bl_cut.csv')
 
     print('\nFeNO')
     cutoff_analysis(X='FeNO', y='ISE_Eo3%', data=df_orig, youden=True, file_nm='feno_cut.csv')
 # %% Asthma
+    print('Asthma')
     print(df_orig.query('Asthma == 1')['ISE_Eo3%'].value_counts())
     print('\nBlood Eosinophil Counts')
     cutoff_analysis(X='Lab_EosCount', y='ISE_Eo3%', data=df_orig.query('Asthma == 1'), youden=True, file_nm='bl_cut_sub_a.csv')
@@ -217,6 +219,7 @@ if __name__ == '__main__':
     print('\nFeNO')
     cutoff_analysis(X='FeNO', y='ISE_Eo3%', data=df_orig.query('Asthma == 0'), youden=True, file_nm='feno_cut_sub_h.csv')
 # %% Cough
+    print('Cough')
     print(df_orig.query('Sx_cough == 1')['ISE_Eo3%'].value_counts())
     print('\nBlood Eosinophil Counts')
     cutoff_analysis(X='Lab_EosCount', y='ISE_Eo3%', data=df_orig.query('Sx_cough == 1'), youden=True, file_nm='bl_cut_sub_a.csv')
@@ -232,6 +235,7 @@ if __name__ == '__main__':
     print('\nFeNO')
     cutoff_analysis(X='FeNO', y='ISE_Eo3%', data=df_orig.query('Sx_cough == 0'), youden=True, file_nm='feno_cut_sub_h.csv')
 # %% Wheezing
+    print('Wheezing')
     print(df_orig.query('Sx_wheezing == 1')['ISE_Eo3%'].value_counts())
     print('\nBlood Eosinophil Counts')
     cutoff_analysis(X='Lab_EosCount', y='ISE_Eo3%', data=df_orig.query('Sx_wheezing == 1'), youden=True, file_nm='bl_cut_sub_a.csv')
@@ -246,4 +250,21 @@ if __name__ == '__main__':
 
     print('\nFeNO')
     cutoff_analysis(X='FeNO', y='ISE_Eo3%', data=df_orig.query('Sx_wheezing == 0'), youden=True, file_nm='feno_cut_sub_h.csv')
+# %% Dyspnea
+    print('dyspnea')
+    print(df_orig.query('Sx_dyspnea	 == 1')['ISE_Eo3%'].value_counts())
+    print('\nBlood Eosinophil Counts')
+    cutoff_analysis(X='Lab_EosCount', y='ISE_Eo3%', data=df_orig.query('Sx_dyspnea	 == 1'), youden=True, file_nm='bl_cut_sub_a.csv')
+
+    print('\nFeNO')
+    cutoff_analysis(X='FeNO', y='ISE_Eo3%', data=df_orig.query('Sx_dyspnea	 == 1'), youden=True, file_nm='feno_cut_sub_a.csv')
+    
+    print(df_orig.query('Sx_dyspnea	 == 0')['ISE_Eo3%'].value_counts())
+    
+    print('\nBlood Eosinophil Counts')
+    cutoff_analysis(X='Lab_EosCount', y='ISE_Eo3%', data=df_orig.query('Sx_dyspnea	 == 0'), youden=True, file_nm='bl_cut_sub_h.csv')
+
+    print('\nFeNO')
+    cutoff_analysis(X='FeNO', y='ISE_Eo3%', data=df_orig.query('Sx_dyspnea	 == 0'), youden=True, file_nm='feno_cut_sub_h.csv')
+
 # %%
