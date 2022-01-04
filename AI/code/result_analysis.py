@@ -13,8 +13,8 @@ pd.set_option("display.max_columns", None)
 fig_results = pd.DataFrame()
 metric_results = pd.DataFrame()
 
-fig_data_list = glob("../result/metric/ai_fig*csv")
-metric_data_list = glob("../result/metric/ai_metric*csv")
+fig_data_list = glob("../result/final/ai_fig*csv")
+metric_data_list = glob("../result/final/ai_metric*csv")
 
 fig_data_list.sort()
 metric_data_list.sort()
@@ -48,6 +48,8 @@ metric_results = pd.concat((metric_results, metric_baseline), axis=0).reset_inde
 feature_order = ['baseline', 'mbpt_result_pc20', 'mbpt_result_feno', 'mbpt_result_ise', 'mbpt_result_feno_ise',
                  'mbpt_txt', 'mbpt_txt_feno', 'mbpt_txt_ise', 'mbpt_txt_feno_ise']
 
+feature_order = ['bpt_txt', 'bpt_txt_ise', 'bpt_txt_feno', 'bpt_txt_feno_ise']
+
 # %%
 metric_columns = [x for x in metric_results.columns if re.search('test', x)]
 
@@ -62,12 +64,16 @@ for metric in metric_columns:
 for feature in feature_order:
     plot_roc_curve(x='fpr', y='tpr', data=fig_results.query("feature == @feature"), mean=metric_results.query("feature == @feature")['test_roc_auc'].mean(), std=metric_results.query("feature == @feature")['test_roc_auc'].std())
     plot_prc_curve(x='recall', y='precision', data=fig_results.query("feature == @feature"), mean=metric_results.query("feature == @feature")['test_pr_auc'].mean(), std=metric_results.query("feature == @feature")['test_pr_auc'].std())
+    
+# %%
+plot_roc_curve_in_one(x='fpr', y='tpr', data=fig_results, metric=metric_results, feature_order=feature_order)
+plot_prc_curve_in_one(x='recall', y='precision', data=fig_results, metric=metric_results, feature_order=feature_order)
 # %%
 metric_results.to_csv('../result/selected_metric/selected_metric.csv', index=False, encoding='utf-8')
 fig_results.to_csv('../result/selected_metric/selected_fig.csv', index=False, encoding='utf-8')
 # %%
 
-feature_order = ['baseline', 'mbpt_txt']
+feature_order = ['baseline', 'bpt_txt']
 
 for metric in metric_columns:
     fig, ax = plt.subplots(1, 1, figsize=(5,10))
@@ -75,4 +81,3 @@ for metric in metric_columns:
     plt.grid()
     plt.xticks(rotation=45)
     plt.show()
-# %%
